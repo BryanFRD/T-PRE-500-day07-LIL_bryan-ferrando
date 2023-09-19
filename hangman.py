@@ -2,7 +2,7 @@ from french_words import list as word_list
 import random
 import unicodedata
 
-word, guess, points = "", [], 0
+word, guess = "", []
 
 def generate_word():
   w = word_list[random.randint(0, len(word_list))]
@@ -11,8 +11,8 @@ def generate_word():
 
 def ask_to_play():
   ipt = input("Do you want to play ? (y/n)")
-  if ipt in ["y", "n"]:
-    return ipt == "y"
+  if ipt in ["y", "n", "d"]:
+    return ipt
   return ask_to_play()
 
 def ask_guess():
@@ -26,19 +26,21 @@ def show_game():
   return " ".join((c if c in guess else "_") for c in word)
 
 while True:
-  if not ask_to_play():
+  play = ask_to_play()
+  if play == "n":
     break
   
   word = generate_word()
-  print(word)
+  guess = []
   
   while True:
+    if play == "d":
+      print(word)
+    
     print(show_game())
     
-    print([*filter(lambda x: x in word, guess)])
-    
     if len([*filter(lambda x: x in word, guess)]) == len(word):
-      print(f"You've won with {points} points!")
+      print(f"You've won with {len(guess)} guesses!")
       break
     
     ipt = ask_guess()
@@ -50,12 +52,7 @@ while True:
     guess.append(ipt)
     if len(ipt) > 1:
       if ipt == word:
-        print(f"You won with {points} points!")
+        print(f"You won with {len(guess)} guesses!")
         break
-      points -= 1
       print("Wrong!")
-      continue
-    
-    if ipt not in word:
-      points -= 1
       continue
