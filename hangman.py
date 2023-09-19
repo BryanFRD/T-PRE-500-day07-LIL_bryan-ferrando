@@ -41,7 +41,7 @@ while True:
     
     print(show_game())
     
-    if len([*filter(lambda x: x in word, guess)]) == len(word):
+    if not False in [(c in guess) for c in word]:
       print(f"You've won with {len(guess)} guesses!")
       break
     
