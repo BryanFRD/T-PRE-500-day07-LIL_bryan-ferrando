@@ -6,8 +6,10 @@ word, guess = "", []
 
 def generate_word():
   w = word_list[random.randint(0, len(word_list))]
-  w = "".join(c for c in unicodedata.normalize("NFD", w) if unicodedata.category(c) != "Mn")
-  return w.upper()
+  return normalize(w)
+
+def normalize(str):
+  return "".join(c for c in unicodedata.normalize("NFD", str) if unicodedata.category(c) != "Mn").upper()
 
 def ask_to_play():
   ipt = input("Do you want to play ? (y/n)")
@@ -18,7 +20,7 @@ def ask_to_play():
 def ask_guess():
   ipt = input("Guess a letter or a word: ")
   if ipt.isalpha():
-    return ipt.upper()
+    return normalize(ipt)
   
   return ask_guess()
 
